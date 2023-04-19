@@ -30,10 +30,10 @@ def export_data():
     c.execute('SELECT * FROM user_data')
     data = c.fetchall()
     df = pd.DataFrame(data, columns=["Name", "Student Number", "Gender"])
-    desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
-    file_path = os.path.join(desktop_path, "user_data.csv")
-    df.to_csv(file_path, index=False, encoding='cp949')
-    st.success("Data exported to CSV file!")
+    csv = df.to_csv(index=False, encoding='cp949')
+    b64 = base64.b64encode(csv.encode()).decode()  # create a base-64 encoded string of the CSV data
+    href = f'<a href="data:file/csv;base64,{b64}" download="user_data.csv">Download CSV File</a>'
+    st.markdown(href, unsafe_allow_html=True)
 
 # Login function
 def login():
