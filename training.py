@@ -12,13 +12,16 @@ page = st.sidebar.selectbox("Select a page", tabs)
 conn = sqlite3.connect('user_data.db')
 c = conn.cursor()
 
+
+
 # Create table
 def create_table():
-    c.execute('CREATE TABLE IF NOT EXISTS user_data(name TEXT, student_number TEXT, gender TEXT)')
+    c.execute('CREATE TABLE IF NOT EXISTS user_data(name TEXT, student_number TEXT, gender TEXT, date TEXT)')
+
 
 # Insert data into table
-def add_data(name, student_number, gender):
-    c.execute('INSERT INTO user_data(name, student_number, gender) VALUES (?,?,?)', (name, student_number, gender))
+def add_data(name, student_number, gender, date):
+    c.execute('INSERT INTO user_data(name, student_number, gender, date) VALUES (?,?,?,?)', (name, student_number, gender, date))
     conn.commit()
 
 # Initialize data in table
@@ -30,7 +33,7 @@ def init_data():
 def export_data():
     c.execute('SELECT * FROM user_data')
     data = c.fetchall()
-    df = pd.DataFrame(data, columns=["Name", "Student Number", "Gender"])
+    df = pd.DataFrame(data, columns=["Name", "Student Number", "Gender", "Date"])
     csv = df.to_csv(index=False, encoding='cp949')
     # Prompt the user to download the file
     b64 = base64.b64encode(csv.encode('cp949')).decode()
@@ -58,8 +61,9 @@ if page == "시실리 활동 신청":
     name = st.text_input("이름")
     student_number = st.text_input("학번")
     gender = st.radio("성별", ('남', '여'))
+    date = st.date_input("신청하고 싶은 활동의 날짜")
     if st.button("신청하기"):
-        add_data(name, student_number, gender)
+        add_data(name, student_number, gender, date)
         st.success("신청되었습니다!")
 
 # View data page
