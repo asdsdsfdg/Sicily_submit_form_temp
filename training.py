@@ -1,3 +1,4 @@
+import base64
 import streamlit as st
 import sqlite3
 import pandas as pd
@@ -31,9 +32,11 @@ def export_data():
     data = c.fetchall()
     df = pd.DataFrame(data, columns=["Name", "Student Number", "Gender"])
     csv = df.to_csv(index=False, encoding='cp949')
-    b64 = base64.b64encode(csv.encode()).decode()  # create a base-64 encoded string of the CSV data
-    href = f'<a href="data:file/csv;base64,{b64}" download="user_data.csv">Download CSV File</a>'
+    # Prompt the user to download the file
+    b64 = base64.b64encode(csv.encode()).decode()
+    href = f'<a href="data:file/csv;base64,{b64}" download="user_data.csv">Download CSV file</a>'
     st.markdown(href, unsafe_allow_html=True)
+    st.success("Data exported to CSV file!")
 
 # Login function
 def login():
