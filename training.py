@@ -1,6 +1,7 @@
 import streamlit as st
 import sqlite3
 import pandas as pd
+import os
 
 # Tab titles
 tabs = ["Input Data", "View Data"]
@@ -29,7 +30,9 @@ def export_data():
     c.execute('SELECT * FROM user_data')
     data = c.fetchall()
     df = pd.DataFrame(data, columns=["Name", "Student Number", "Gender"])
-    df.to_csv("user_data.csv", index=False, encoding='cp949')
+    desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+    file_path = os.path.join(desktop_path, "user_data.csv")
+    df.to_csv(file_path, index=False, encoding='cp949')
     st.success("Data exported to CSV file!")
 
 # Login function
