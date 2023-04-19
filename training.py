@@ -46,7 +46,7 @@ def login():
     st.write("로그인이 필요합니다")
     username = st.text_input("Username")
     password = st.text_input("Password", type='password')
-    if username == "admin1" and password == "kanukanu":
+    if username == "******" and password == "******":
         return True
     elif username != "" and password != "":
         st.error("잘못된 아이디 또는 비밀번호입니다.")
