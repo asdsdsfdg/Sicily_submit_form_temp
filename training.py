@@ -33,7 +33,7 @@ def export_data():
     df = pd.DataFrame(data, columns=["Name", "Student Number", "Gender"])
     csv = df.to_csv(index=False, encoding='cp949')
     # Prompt the user to download the file
-    b64 = base64.b64encode(csv.encode()).decode()
+    b64 = base64.b64encode(csv.encode('cp949')).decode()
     href = f'<a href="data:file/csv;base64,{b64}" download="user_data.csv">Download CSV file</a>'
     st.markdown(href, unsafe_allow_html=True)
     st.success("Data exported to CSV file!")
