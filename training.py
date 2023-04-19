@@ -45,8 +45,10 @@ def login():
     password = st.text_input("Password", type='password')
     if username == "admin1" and password == "kanukanu":
         return True
+    elif username != "admin1" or password != "kanukanu":
+        st.error ("아이디 또는 비밀번호가 틀렸습니다.")
+        return False
     else:
-        st.error("잘못된 입력입니다.")
         return False
 
 # Input data page
