@@ -2,10 +2,10 @@ import base64
 import streamlit as st
 import sqlite3
 import pandas as pd
-import os
+
 
 # Tab titles
-tabs = ["Input Data", "View Data"]
+tabs = ["시실리 활동 신청", "신청 내역 확인"]
 page = st.sidebar.selectbox("Select a page", tabs)
 
 # Database connection
@@ -36,39 +36,40 @@ def export_data():
     b64 = base64.b64encode(csv.encode('cp949')).decode()
     href = f'<a href="data:file/csv;base64,{b64}" download="user_data.csv">Download CSV file</a>'
     st.markdown(href, unsafe_allow_html=True)
-    st.success("Data exported to CSV file!")
+    st.success("엑셀 파일로 저장되었어요!")
 
 # Login function
 def login():
-    st.write("Please login")
+    st.write("로그인이 필요합니다")
     username = st.text_input("Username")
     password = st.text_input("Password", type='password')
     if username == "admin1" and password == "kanukanu":
         return True
     else:
+        st.error("잘못된 입력입니다.")
         return False
 
 # Input data page
-if page == "Input Data":
-    st.title("Input Data")
+if page == "시실리 활동 신청":
+    st.title("시실리 활동 신청")
     create_table()
-    name = st.text_input("Name")
-    student_number = st.text_input("Student Number")
-    gender = st.radio("Gender", ('Male', 'Female'))
-    if st.button("Submit"):
+    name = st.text_input("이름")
+    student_number = st.text_input("학번")
+    gender = st.radio("성별", ('남', '여'))
+    if st.button("신청하기"):
         add_data(name, student_number, gender)
-        st.success("Data submitted!")
+        st.success("신청되었습니다!")
 
 # View data page
-if page == "View Data":
-    st.title("View Data")
+if page == "신청 내역 확인":
+    st.title("신청 내역 확인")
     if login():
         c.execute('SELECT * FROM user_data')
         data = c.fetchall()
         for row in data:
             st.write(row)
-        if st.button("Initialize Data"):
+        if st.button("신청 내역 지우기"):
             init_data()
             st.success("Data initialized!")
-        if st.button("Export Data"):
+        if st.button("엑셀 파일로 저장하기"):
             export_data()
