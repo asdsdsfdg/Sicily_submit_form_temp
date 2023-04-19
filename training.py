@@ -1,5 +1,6 @@
 import streamlit as st
 import sqlite3
+import pandas as pd
 
 # Tab titles
 tabs = ["Input Data", "View Data"]
@@ -17,6 +18,19 @@ def create_table():
 def add_data(name, student_number, gender):
     c.execute('INSERT INTO user_data(name, student_number, gender) VALUES (?,?,?)', (name, student_number, gender))
     conn.commit()
+
+# Initialize data in table
+def init_data():
+    c.execute('DELETE FROM user_data')
+    conn.commit()
+
+# Export data to CSV
+def export_data():
+    c.execute('SELECT * FROM user_data')
+    data = c.fetchall()
+    df = pd.DataFrame(data, columns=["Name", "Student Number", "Gender"])
+    df.to_csv("user_data.csv", index=False, encoding='cp949')
+    st.success("Data exported to CSV file!")
 
 # Login function
 def login():
@@ -47,3 +61,8 @@ if page == "View Data":
         data = c.fetchall()
         for row in data:
             st.write(row)
+        if st.button("Initialize Data"):
+            init_data()
+            st.success("Data initialized!")
+        if st.button("Export Data"):
+            export_data()
