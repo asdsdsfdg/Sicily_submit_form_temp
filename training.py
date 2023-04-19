@@ -76,6 +76,6 @@ if page == "신청 내역 확인":
             st.write(row)
         if st.button("신청 내역 지우기"):
             init_data()
-            st.success("Data initialized!")
+            st.success("신청 내역이 삭제되었습니다.")
         if st.button("엑셀 파일로 저장하기"):
             export_data()
